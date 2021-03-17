@@ -1,30 +1,41 @@
-import React, {useRef} from 'react'
+import React from 'react'
 import {Modal, Form, Button} from 'react-bootstrap'
 
-function ContactsModal({handleClose}) {
-    const idRef = useRef()
-    const nameRef = useRef()
+function ContactsModal({handleClose, contacts}) {
     
-    function handleSubmit(e){
+    const handleSubmit = (e)=> {
         e.preventDefault()
         
         handleClose()
     }
+
+    const handleCheck = () => {
+
+    }
+
     return (
         <div className="modal-wrapper">
             <Modal.Header closeButton>
-                <Modal.Title>Create New Contact</Modal.Title>
+                <Modal.Title>Add Person to Chat</Modal.Title>
             </Modal.Header>  
             <Modal.Body>
                 <Form onSubmit={handleSubmit}>
-                    <Form.Group>
-                        <Form.Control type="text" placeholder="Enter ID" ref={idRef}required/>
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Control type="text" placeholder="Enter Username" ref={nameRef} required/>
-                    </Form.Group>
+                    {
+                        (contacts) && contacts.map((contact)=>(
+                            (contact.username === localStorage.getItem('user'))
+                            ? null
+                            : <Form.Group key={contact.id}>
+                                <Form.Check 
+                                    type="checkbox"
+                                    label={contact.username}
+                                    value
+                                    onChange={()=>handleCheck(contact.id)}
+                                />
+                            </Form.Group>
+                        ))
+                    }
                     <Button type="submit" variant="outline-primary" className="mb-3 float-right">
-                        Create
+                        Add
                     </Button>
                 </Form>
             </Modal.Body>        
