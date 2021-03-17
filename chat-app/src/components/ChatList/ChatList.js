@@ -4,8 +4,10 @@ import ChatsModal from '../Modals/ChatsModal'
 import ContactsModal from '../Modals/ContactsModal'
 import axios from 'axios'
 import Chats from './Chats'
+import Contacts from  './Contacts'
 
 const projectID = 'db666265-557a-44c8-92a1-f9261e58cc4e'
+const projectKey = '6346e83a-eb04-49bf-899b-b0850ef36b5a'
 
 function ChatList() {
 
@@ -15,6 +17,7 @@ function ChatList() {
     const [key, setKey] = useState(chatsKey)
     const [show, setShow] =useState(false)
     const [chats, setChats] = useState([])
+    const [contacts, setContacts] = useState([])
 
     const chatsOpen = key === chatsKey
     const handleOpen = ()=> setShow(true)
@@ -31,7 +34,22 @@ function ChatList() {
             {headers:authObject}
         )
         .then((response)=>setChats(response.data))
-    }, [])
+    }, [chats])
+
+    useEffect(()=>{
+        const getContacts = async ()=>{
+            try {
+                axios.get(
+                    'https://api.chatengine.io/projects/people/',
+                    { headers: { "Private-Key": projectKey } }
+                )
+                .then((response)=>setContacts(response.data))
+            }catch(error){
+                console.log(error)
+            }
+        }
+        getContacts()
+    }, [contacts])
     
     return (
         <div className="d-flex flex-column" style={{width: '20vw'}}>
@@ -41,7 +59,7 @@ function ChatList() {
                         <Nav.Link eventKey={chatsKey}>Chats</Nav.Link>
                     </Nav.Item>
                     <Nav.Item>
-                        <Nav.Link eventKey={contactsKey}>Contacts</Nav.Link>
+                        <Nav.Link eventKey={contactsKey}>People</Nav.Link>
                     </Nav.Item>
                 </Nav>
                 <Tab.Content className="tab-content overflow-auto flex-grow-1">
@@ -49,14 +67,14 @@ function ChatList() {
                         <Chats chats={chats} />
                     </Tab.Pane>
                     <Tab.Pane eventKey={contactsKey}>
-                        contacts
+                        <Contacts contacts={contacts} />
                     </Tab.Pane>
                 </Tab.Content>
                 <Button className="mt-1 mb-3" onClick={handleOpen} variant="outline-primary">
                     {
                         (chatsOpen) 
                         ?  'New Chat'
-                        :  'New Contact'
+                        :  'Add Person to Chat'
                     }
                 </Button>
             </Tab.Container>
@@ -64,7 +82,7 @@ function ChatList() {
                     {
                         (chatsOpen) 
                         ? <ChatsModal handleClose={handleClose} />
-                        : <ContactsModal handleClose={handleClose} />
+                        : <ContactsModal handleClose={handleClose} contacts={contacts} />
                     }
             </Modal>
         </div>
