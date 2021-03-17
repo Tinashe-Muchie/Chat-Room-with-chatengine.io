@@ -100,8 +100,7 @@ function Login() {
             <div className="mt-3" style={{display:'flex', justifyContent:'center'}}>
                 {(err) && <Alert variant='dark' style={{color: '#C5C6C7', backgroundColor: '#3500D3'}}>
                     {error}
-                </Alert>}
-                
+                </Alert>}   
             </div>
         </div>
     )
