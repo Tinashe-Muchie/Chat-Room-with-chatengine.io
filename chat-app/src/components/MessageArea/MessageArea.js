@@ -18,7 +18,7 @@ function MessageArea() {
     }
 
     return (
-        <div className="d-flex flex-column flex-grow-1 ml-1">
+        <div className="d-flex flex-column flex-grow-1 mx-1">
             <Button 
                 variant="outline-primary" 
                 type="button" 
@@ -27,7 +27,7 @@ function MessageArea() {
                 onClick={handleLogout}>
                 Logout
             </Button>
-            <div className="id-tab mb-1 text-small text-muted">
+            <div className="id-tab mb-0 text-small text-muted">
                     ChatTitle: <br/>
                     Participants:
             </div>
