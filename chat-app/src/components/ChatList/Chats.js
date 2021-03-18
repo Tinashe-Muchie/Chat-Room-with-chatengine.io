@@ -1,12 +1,10 @@
-import React, {useState} from 'react'
+import React, {useContext} from 'react'
 import {ListGroup} from 'react-bootstrap'
+import {Context} from '../Context/Context'
 
 function Chats({chats}) {
 
-    const [activeChat, setActiveChat] = useState(0)
-    let selectedChat = chats.map((chat)=>{
-            return (chat.id === activeChat)
-        })
+    const {selectedChat, setActiveChat} = useContext(Context)
 
     if(chats)
     return (
