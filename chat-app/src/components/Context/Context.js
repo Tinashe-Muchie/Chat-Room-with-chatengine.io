@@ -10,6 +10,8 @@ function GlobalContext({children}) {
     const [chats, setChats] = useState([])
     const [contacts, setContacts] = useState([])
     const [activeChat, setActiveChat] = useState(null)
+    const [members, setMembers] = useState([])
+    const [messages, setMessages] = useState([])
 
     let selectedChat = chats.map((chat)=>{
         return (chat.id === activeChat)
@@ -27,7 +29,7 @@ function GlobalContext({children}) {
         axios
           .get("https://api.chatengine.io/chats", { headers: authObject })
           .then((response) => setChats(response.data));
-      }, [chats]);
+      }, []);
 
       useEffect(()=>{
         const getContacts = async ()=>{
@@ -42,7 +44,31 @@ function GlobalContext({children}) {
             }
         }
         getContacts()
-    }, [contacts])
+    }, [])
+
+    useEffect(()=>{
+        const authObject = {
+            "Project-ID": projectID,
+            "User-Name": localStorage.getItem("user"),
+            "User-Secret": localStorage.getItem("password"),
+          };
+          (selectChat) &&
+          axios
+            .get(`https://api.chatengine.io/chats/${selectChat.id}/people/`, { headers: authObject })
+            .then((response) => setMembers(response.data))
+    }, [selectChat])
+
+    useEffect(()=>{
+        const authObject = {
+            "Project-ID": projectID,
+            "User-Name": localStorage.getItem("user"),
+            "User-Secret": localStorage.getItem("password"),
+          };
+        (selectChat) &&
+        axios
+            .get(`https://api.chatengine.io/chats/${selectChat.id}/messages/`, { headers: authObject })
+            .then((response) => setMessages(response.data))
+    }, [selectChat])
 
       const value = {
           chats,
@@ -50,6 +76,8 @@ function GlobalContext({children}) {
           selectedChat,
           setActiveChat,
           selectChat,
+          members,
+          messages,
       }
 
     return (
