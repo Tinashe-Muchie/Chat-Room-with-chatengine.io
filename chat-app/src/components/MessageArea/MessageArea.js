@@ -1,13 +1,29 @@
-import React, {useState} from 'react'
-import {Button, Form, InputGroup} from 'react-bootstrap'
+import React, {useState, useContext} from 'react'
+import {Form, Button, InputGroup} from 'react-bootstrap'
+import {sendMessage} from 'react-chat-engine'
+import {Icon} from '@iconify/react'
+import paperPlane from '@iconify-icons/fa-regular/paper-plane'
+import {Context} from '../Context/Context'
+
+const projectID = 'db666265-557a-44c8-92a1-f9261e58cc4e'
 
 function MessageArea() {
 
-    const [text, setText] = useState('')
+    const [message, setMessage] = useState('')
+    const {selectChat, messages} = useContext(Context)
 
-    const handleSubmit = (e) => {
+    const authObject = {
+        publicKey: projectID,
+        userName: localStorage.getItem('user'),
+        userSecret: localStorage.getItem('password'),
+    };
+    const callback = (data)=> console.log(data)
+      
+    const handleSubmit = (e)=> {
         e.preventDefault()
+        sendMessage(authObject, selectChat.id, {text:message}, callback)
 
+        setMessage('')
     }
 
     const handleLogout = ()=> {
@@ -16,7 +32,7 @@ function MessageArea() {
 
         window.location.reload()
     }
-
+    
     return (
         <div className="d-flex flex-column flex-grow-1 mx-1">
             <Button 
@@ -27,13 +43,18 @@ function MessageArea() {
                 onClick={handleLogout}>
                 Logout
             </Button>
-            <div className="id-tab mb-0 text-small text-muted">
-                    ChatTitle: <br/>
-                    Participants:
+            <div className="id-tab mb-0 chat-title-container">
+                    <div className="my-2 chat-title">
+                        {selectChat.title}
+                    </div>      
             </div>
-            <div className="tab-content flex-grow-1 overflow-auto mb-1">
-                <div className="d-flex flex-column align-items-end justify-content-end px-1 py-2">
-
+            <div className="d-flex flex-column flex-grow-1">
+                <div className="tab-content flex-grow-1 overflow-auto mb-1">
+                    <div className="d-flex align-items-end flex-column justify-content-end px-2 py-2">
+                        {
+                        messages.map((message)=>message.text)
+                        }
+                    </div>
                 </div>
             </div>
             <Form onSubmit={handleSubmit}>
@@ -42,16 +63,16 @@ function MessageArea() {
                         <Form.Control
                             as="textarea"
                             required
-                            value={text}
-                            onChange={(e)=>setText(e.target.value)}
+                            value={message}
+                            onChange={(e)=>setMessage(e.target.value)}
                             style={{height:'10.5vh',resize:'none'}}
                         />
-                        <InputGroup.Append>
-                            <Button type="submit">Send</Button>
-                        </InputGroup.Append>
+                    <InputGroup.Append>
+                        <Button type="submit"><Icon icon={paperPlane} /></Button>
+                    </InputGroup.Append>
                     </InputGroup>
                 </Form.Group>
-            </Form>
+            </Form>  
         </div>
     )
 }
