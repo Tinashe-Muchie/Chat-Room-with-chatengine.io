@@ -50,7 +50,7 @@ function ChatList() {
                     {
                         (chatsOpen) 
                         ? <ChatsModal handleClose={handleClose} />
-                        : <ContactsModal handleClose={handleClose} contacts={contacts} />
+                        : <ContactsModal handleClose={handleClose} />
                     }
             </Modal>
         </div>
