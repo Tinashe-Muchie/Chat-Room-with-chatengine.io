@@ -72,12 +72,16 @@ function GlobalContext({children}) {
 
       const value = {
           chats,
+          setChats,
           contacts, 
+          setContacts,
           selectedChat,
           setActiveChat,
           selectChat,
           members,
+          setMembers,
           messages,
+          setMessages
       }
 
     return (
