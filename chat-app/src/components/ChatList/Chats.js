@@ -19,8 +19,10 @@ function Chats({chats}) {
                             active={selectedChat[index]}
                             onClick={()=>setActiveChat(chat.id)}
                             className="text-left"
-                        >
-                            {chat.title}
+                        >   
+                            <div>
+                                {chat.title}
+                            </div>
                         </ListGroup.Item>
                     ))
                     :   <div style={{
