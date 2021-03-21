@@ -1,6 +1,7 @@
-import React, {useState} from 'react'
+import React, {useState, useContext} from 'react'
 import {Modal, Form, Button, Alert} from 'react-bootstrap'
 import axios from 'axios'
+import {Context} from '../Context/Context'
 
 const projectID = 'db666265-557a-44c8-92a1-f9261e58cc4e'
 
@@ -8,6 +9,7 @@ function ChatsModal({handleClose}) {
 
     const [title, setTitle] = useState('')
     const [error, setError] = useState('')
+    const {setChats, chats, setActiveChat} = useContext(Context)
 
     const authObject = {
         'Project-ID': projectID,
@@ -23,6 +25,11 @@ function ChatsModal({handleClose}) {
                 { 'title': title, 'admin_username': localStorage.getItem('user') },
                 { headers: authObject },    
             )
+            .then(response =>{
+                setChats([...chats, response.data])
+                setActiveChat(response.data.id)
+            })
+            .catch(error => console.log(error))
             handleClose()
         }catch(error){
             setError('Oops! something went wrong, try again.')
