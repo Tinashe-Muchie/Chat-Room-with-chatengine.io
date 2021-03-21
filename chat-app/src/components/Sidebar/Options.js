@@ -1,14 +1,13 @@
 import React, {useContext, useState} from 'react'
 import {Button, InputGroup, FormControl, ListGroup} from 'react-bootstrap'
 import {Context} from '../Context/Context'
-import {editMyData} from 'react-chat-engine'
 import axios from 'axios'
 
 const projectID = 'db666265-557a-44c8-92a1-f9261e58cc4e'
 
 function Options() {
 
-    const {selectChat, members} = useContext(Context)
+    const {selectChat, members, setChats, chats, setMembers} = useContext(Context)
     const [username, setUsername] = useState('')
     const [user, setUser] = useState('')
 
@@ -24,7 +23,7 @@ function Options() {
             `https://api.chatengine.io/chats/${selectChat.id}/`,
             {headers: authObject}
         )
-        .then(response=>console.log(response.data))
+        .then((response)=>setChats(chats.filter(c=> c.id !==response.data.id)))
         .catch(error=> console.log(error))
         }
     }
@@ -36,7 +35,7 @@ function Options() {
             { 'username': username },
             { headers: authObject },
         )
-        .then(response => console.log(response.data))
+        .then(response => setMembers(members.filter(m => m.person.username !== response.data.person.username)))
         .catch(error => console.log(error))
         setUsername('')
         }
@@ -49,9 +48,9 @@ function Options() {
                 { 'username': user },
                 { headers: authObject },
             )
-            .then(response => console.log(response.data))
+            .then(response => setMembers(members.filter(m => m.person.username !== response.data.person.username)))
             .catch(error => console.log(error))
-            setUser('')
+            setUser('') 
         }
     }
     
@@ -71,7 +70,15 @@ function Options() {
                                 action
                                 className="text-left"
                             >
-                                {member.person.username}
+                                {   (member.person.is_online) 
+                                    ?   <div className="led-green mb-3">
+                                            <span className="member-status">{member.person.username}</span>
+                                        </div>
+                                    :   <div className="led-red-on mb-3">
+                                            <span className="member-status">{member.person.username}</span>
+                                        </div>
+                                }
+                                
                             </ListGroup.Item>
                         ))
                         }
@@ -114,7 +121,7 @@ function Options() {
                             >Delete Chat</Button>
                     </>
                 :   <div>
-                        <div className="mx-1 mt-2">
+                        <div className="mx-1 mt-2 members-wrapper">
                             <span className="chat-members">Chat Members</span>
                             <ListGroup variant="flush">
                             {
@@ -125,7 +132,14 @@ function Options() {
                                     action
                                     className="text-left"
                                 >
-                                    {member.person.username}
+                                    {   (member.person.is_online) 
+                                        ?   <div className="led-green mb-3">
+                                                <span className="member-status">{member.person.username}</span>
+                                            </div>
+                                        :   <div className="led-red-on mb-3">
+                                                <span className="member-status">{member.person.username}</span>
+                                            </div>
+                                    }
                                 </ListGroup.Item>
                                 ))
                             }
