@@ -5,11 +5,11 @@ import {Context} from '../Context/Context'
 
 const projectID = 'db666265-557a-44c8-92a1-f9261e58cc4e'
 
-function ContactsModal({handleClose, contacts}) {
+function ContactsModal({handleClose}) {
 
     const [username, setUsername] = useState('')
     const [error, setError] = useState('')
-    const {selectChat} = useContext(Context)
+    const {selectChat, setMembers, contacts, members} = useContext(Context)
 
     const authObject = {
         'Project-ID': projectID,
@@ -25,6 +25,8 @@ function ContactsModal({handleClose, contacts}) {
                 { 'username': username },
                 { headers: authObject },    
             )
+            .then(response => setMembers([...members, response.data]))
+            .catch(error => console.log(error))
             handleClose()
         }catch(error){
             setError('Oops! something went wrong, try again.')
