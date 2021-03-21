@@ -210,3 +210,80 @@
   margin: 5px;
   font-family: FontAwesome;
 }
+.led-green {
+  width: 10px;
+  height: 10px;
+  background-color: #690;
+  border-radius: 50%;
+  box-shadow: #000 0 -1px 7px 1px, inset #460 0 -1px 9px, #7D0 0 2px 12px;
+}
+.led-red-on {
+  width: 10px;
+  height: 10px;
+  background-color: #f90;
+  border-radius: 50%;
+  box-shadow: #000 0 -1px 7px 1px, inset #600 0 -1px 9px, #F00 0 2px 12px;
+}
+.member-status {
+  position: relative;
+  padding: 15px;
+  margin: 3px;
+}
+.own-message-bubble {
+  background-color: #240090a1;
+  padding-left: 8px;
+  padding-right: 8px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  border:hidden;
+  border-radius: 5px;
+}
+.their-message-bubble {
+  background-color: #282828af;
+  padding-left: 8px;
+  padding-right: 8px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  border:thin solid #3500D3;
+  border-radius: 5px;
+}
+.message-sender {
+  font-size: x-small !important;
+}
+::-webkit-scrollbar {
+  width: 0.5em;
+}
+
+::-webkit-scrollbar-track {
+  background: #240090a1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #282828af;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #282828;
+}
+
+.picture-icon {
+  position: relative;
+  font-size: larger;
+}
+
+.image-button {
+  cursor: auto;
+  height: 100%;
+}
+
+.message-image {
+  object-fit: cover;
+  border-radius: 6px;
+  height: 30vw;
+  /* width: 30vw; */
+  max-height: 200px;
+  max-width: 200px;
+  min-height: 100px;
+  min-width: 100px;
+}
+
